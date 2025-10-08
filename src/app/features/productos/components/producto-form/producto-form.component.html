@@ -1,0 +1,33 @@
+<div class="container mt-4">
+  <h2>{{ editMode ? 'Editar Producto' : 'Nuevo Producto' }}</h2>
+
+  <form (ngSubmit)="guardar()" #form="ngForm">
+    <div class="mb-3">
+      <label class="form-label">Código</label>
+      <input type="number" class="form-control" name="codigo" [(ngModel)]="producto.codigo" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Descripción</label>
+      <input type="text" class="form-control" name="descripcion" [(ngModel)]="producto.descripcion" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Cantidad</label>
+      <input type="number" class="form-control" name="cantidad" [(ngModel)]="producto.cantidad" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Precio Compra</label>
+      <input type="number" class="form-control" name="precioCompra" [(ngModel)]="producto.precioCompra" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Precio Venta</label>
+      <input type="number" class="form-control" name="precioVenta" [(ngModel)]="producto.precioVenta" required>
+    </div>
+
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <button routerLink="/productos" type="button" class="btn btn-secondary ms-2">Cancelar</button>
+  </form>
+</div>

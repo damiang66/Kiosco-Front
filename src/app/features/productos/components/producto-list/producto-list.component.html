@@ -1,0 +1,30 @@
+<div class="container mt-4">
+  <h2>Listado de Productos</h2>
+  <button routerLink="/productos/nuevo" class="btn btn-primary mb-3">Nuevo Producto</button>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Descripción</th>
+        <th>Cantidad</th>
+        <th>Precio Compra</th>
+        <th>Precio Venta</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of productos">
+        <td>{{ p.codigo }}</td>
+        <td>{{ p.descripcion }}</td>
+        <td>{{ p.cantidad }}</td>
+        <td>{{ p.precioCompra | currency:'ARS' }}</td>
+        <td>{{ p.precioVenta | currency:'ARS' }}</td>
+        <td>
+          <button [routerLink]="['/productos/editar', p.id]" class="btn btn-warning btn-sm me-2">Editar</button>
+          <button (click)="eliminar(p.id!)" class="btn btn-danger btn-sm">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
