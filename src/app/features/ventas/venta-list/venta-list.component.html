@@ -1,0 +1,30 @@
+<div class="container mt-4">
+  <h3 class="text-center mb-4">Listado de Ventas</h3>
+
+  <button class="btn btn-success mb-3" (click)="nuevaVenta()">Nueva Venta</button>
+
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark text-center">
+      <tr>
+        <th>ID</th>
+        <th>Cliente</th>
+        <th>Fecha</th>
+        <th>Total</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody class="text-center">
+      <tr *ngFor="let v of ventas">
+        <td>{{ v.id }}</td>
+        <td>{{ v.cliente }}</td>
+        <td>{{ v.fecha | date: 'dd/MM/yyyy HH:mm' }}</td>
+        <td>{{ v.total | currency:'ARS' }}</td>
+        <td>
+          <button class="btn btn-primary btn-sm" (click)="editarVenta(v.id)">Editar</button>
+          <button class="btn btn-danger btn-sm ms-2" (click)="eliminarVenta(v.id)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

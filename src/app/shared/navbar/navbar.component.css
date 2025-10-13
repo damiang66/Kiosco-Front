@@ -1,0 +1,14 @@
+/* estilos mínimos para mejorar contraste y separación */
+.navbar-brand {
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+
+.nav-link.active {
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.dropdown-menu .dropdown-item {
+  cursor: pointer;
+}
