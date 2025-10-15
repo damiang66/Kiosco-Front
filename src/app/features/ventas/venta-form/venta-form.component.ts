@@ -5,7 +5,7 @@ import { VentaService } from '../../../services/venta.service';
 import { ProductoService } from '../../productos/services/producto.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { log } from 'console';
+;
 
 
 
@@ -18,7 +18,7 @@ import { log } from 'console';
 })
 export class VentaFormComponent implements OnInit {
 
-  venta: any = { cliente: '', numeroFactura: '', detalles: [] };
+  venta: any = {fecha:Date, detalles: [] };
   productos: any[] = [];
   productoSeleccionado: any = null;
   cantidad: number = 1;
