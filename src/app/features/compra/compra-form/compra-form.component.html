@@ -1,0 +1,67 @@
+<div class="container mt-4">
+  <h3 class="text-center">{{ idCompra ? 'Editar Compra' : 'Nueva Compra' }}</h3>
+
+ <div class="mb-3">
+  <label>Fecha</label>
+  <input 
+    type="date" 
+    [(ngModel)]="compra.fecha" 
+    class="form-control" 
+    placeholder="Fecha" 
+  />
+</div>
+
+ 
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <label>Producto</label>
+      <select [(ngModel)]="productoSeleccionado" class="form-select">
+        <option [ngValue]="null">Seleccione un producto</option>
+        <option *ngFor="let p of productos" [ngValue]="p">
+          {{ p.descripcion }} - Stock: {{ p.cantidad }}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <label>Cantidad</label>
+      <input type="number" [(ngModel)]="cantidad" class="form-control" />
+    </div>
+
+    <div class="col-md-3 d-flex align-items-end">
+      <button class="btn btn-success w-100" (click)="agregarProducto()">Agregar</button>
+    </div>
+  </div>
+
+  <table class="table table-bordered text-center">
+    <thead class="table-dark">
+      <tr>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Precio</th>
+        <th>Subtotal</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let det of compra.detalles; let i = index">
+        <td>{{ det.producto.descripcion }}</td>
+        <td>{{ det.cantidad }}</td>
+        <td>{{ det.precioUnitario | currency:'ARS' }}</td>
+        <td>{{ det.subtotal | currency:'ARS' }}</td>
+        <td>
+          <button class="btn btn-danger btn-sm" (click)="eliminarDetalle(i)">X</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h5 class="text-end mt-3">Total: {{ compra.total | currency:'ARS' }}</h5>
+
+  <div class="text-center mt-4">
+    <button class="btn btn-primary me-2" (click)="guardarVenta()">Guardar</button>
+    <button class="btn btn-secondary" routerLink="/ventas">Cancelar</button>
+  </div>
+</div>
+
