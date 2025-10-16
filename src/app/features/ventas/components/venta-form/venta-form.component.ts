@@ -1,8 +1,8 @@
+import { ProductoService } from './../../../productos/services/producto.service';
+import { VentaService } from './../../services/venta.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { VentaService } from '../../../services/venta.service';
-import { ProductoService } from '../../productos/services/producto.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 ;
@@ -26,13 +26,13 @@ export class VentaFormComponent implements OnInit {
 
   constructor(
     private ventaService: VentaService,
-    private ProductoService: ProductoService,
+    private productoService: ProductoService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.ProductoService.getAll().subscribe(data => this.productos = data);
+    this.productoService.getAll().subscribe(data => this.productos = data);
     this.idVenta = this.route.snapshot.params['id'];
     if (this.idVenta) {
       this.ventaService.getVentaById(this.idVenta).subscribe((data) => (this.venta = data));

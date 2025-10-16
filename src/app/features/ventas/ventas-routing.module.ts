@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { VentaListComponent } from './venta-list/venta-list.component';
-import { VentaFormComponent } from './venta-form/venta-form.component';
+import { VentaListComponent } from './components/venta-list/venta-list.component';
+import { VentaFormComponent } from './components/venta-form/venta-form.component';
+
 
 const routes: Routes = [
   { path: '', component: VentaListComponent },
