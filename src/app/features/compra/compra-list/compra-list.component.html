@@ -1,0 +1,25 @@
+<div class="container mt-4">
+  <h2>Listado de Compras</h2>
+  <button class="btn btn-primary mb-3" (click)="nuevaCompra()">Nueva Compra</button>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Fecha</th>
+        <th>Total</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let compra of compras">
+        <td>{{ compra.id }}</td>
+        <td>{{ compra.fecha | date:'dd/MM/yyyy' }}</td>
+        <td>{{ compra.total }}</td>
+        <td>
+          <button class="btn btn-danger btn-sm" (click)="eliminar(compra.id)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
