@@ -5,17 +5,21 @@ import { ProductoService } from '../../services/producto.service';
 
 import Swal from 'sweetalert2';
 import { Producto } from '../../../modelos/producto';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-producto-list',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule,FormsModule],
   templateUrl: './producto-list.component.html',
   styleUrls: ['./producto-list.component.css']
 })
 export class ProductoListComponent implements OnInit {
 
   productos: Producto[] = [];
+   productosFiltrados: Producto[] = [];
+  filtroDescripcion: string = '';
+  filtroCodigo: string = '';
 
   constructor(private productoService: ProductoService) {}
 
@@ -25,6 +29,7 @@ export class ProductoListComponent implements OnInit {
 
   cargarProductos() {
     this.productoService.getAll().subscribe(data => this.productos = data);
+    this.productoService.getAll().subscribe(data => this.productosFiltrados = data);
   }
 
   eliminar(id: number) {
@@ -44,6 +49,16 @@ export class ProductoListComponent implements OnInit {
           Swal.fire('Eliminado', 'El producto ha sido eliminado.', 'success');
         });
       }
+    });
+  }
+   filtrarProductos(): void {
+    const desc = this.filtroDescripcion.toLowerCase();
+    const cod = this.filtroCodigo.toString().toLowerCase();
+
+    this.productosFiltrados = this.productos.filter((p) => {
+      const coincideDescripcion = p.descripcion.toLowerCase().includes(desc);
+      const coincideCodigo = cod ? p.codigo.toString().includes(cod) : true;
+      return coincideDescripcion && coincideCodigo;
     });
   }
 }
