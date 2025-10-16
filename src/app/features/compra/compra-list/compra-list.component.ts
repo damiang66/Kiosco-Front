@@ -26,7 +26,9 @@ export class CompraListComponent implements OnInit {
   nuevaCompra() {
     this.router.navigate(['/compras/nueva']);
   }
-
+  editar(id: number) {
+    this.router.navigate(['/compras/editar', id]);
+  }
   eliminar(id: number) {
     Swal.fire({
       title: '¿Eliminar compra?',

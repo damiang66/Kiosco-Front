@@ -17,7 +17,8 @@
         <td>{{ compra.fecha | date:'dd/MM/yyyy' }}</td>
         <td>{{ compra.total }}</td>
         <td>
-          <button class="btn btn-danger btn-sm" (click)="eliminar(compra.id)">Eliminar</button>
+         <button class="btn btn-primary btn-sm" (click)="editar(compra.id)">Editar</button>
+          <button class="btn btn-danger btn-sm ms-2" (click)="eliminar(compra.id)">Eliminar</button>
         </td>
       </tr>
     </tbody>
