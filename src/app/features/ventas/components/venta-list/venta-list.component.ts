@@ -1,20 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { VentaService } from '../../../services/venta.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { VentaService } from '../../services/venta.service';
+import { Ventas } from '../../../modelos/ventas';
+import { VentaDetalleModalComponent } from '../venta-detalle-modal/venta-detalle-modal.component';
 
 @Component({
   selector: 'app-venta-list',
   standalone: true,
-    imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, VentaDetalleModalComponent],
   templateUrl: './venta-list.component.html',
   styleUrls: ['./venta-list.component.css']
 })
 export class VentaListComponent implements OnInit {
 
-  ventas: any[] = [];
+  ventas: Ventas[] = [];
+  selectedVenta: Ventas | null = null;
+  modalVisible = false;
 
   constructor(private ventaService: VentaService, private router: Router) {}
 
@@ -57,5 +61,13 @@ export class VentaListComponent implements OnInit {
       }
     });
   }
-}
 
+  verDetalle(venta: Ventas) {
+    this.selectedVenta = venta;
+    this.modalVisible = true;
+  }
+
+  cerrarModal() {
+    this.modalVisible = false;
+  }
+}
