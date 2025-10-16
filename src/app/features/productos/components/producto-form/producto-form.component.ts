@@ -52,5 +52,8 @@ export class ProductoFormComponent implements OnInit {
       });
     }
   }
+  cancelar(){
+ this.router.navigate(['/productos']);
+  }
 }
 
