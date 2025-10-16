@@ -1,44 +1,46 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" routerLink="/">Kiosco</a>
+    <a class="navbar-brand" href="#">Kiosco</a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
-      aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="/productos"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          Productos
+        </a>
+      </li>
 
-    <div class="collapse navbar-collapse" id="mainNavbar">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/productos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">
-            Productos
-          </a>
-        </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="/compras"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          Compras
+        </a>
+      </li>
 
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/ventas" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">
-            Ventas
-          </a>
-        </li>
-
-        <!-- ejemplo de dropdown -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="cfgDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Config
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="cfgDropdown">
-            <li><a class="dropdown-item" routerLink="/productos/nuevo">Nuevo Producto</a></li>
-            <li><a class="dropdown-item" routerLink="/ventas/nuevo">Nueva Venta</a></li>
-          </ul>
-        </li>
-      </ul>
-
-      <div class="d-flex align-items-center">
-        <!-- ejemplo estado usuario -->
-        <span class="text-white me-3">Hola, Admin</span>
-        <button class="btn btn-outline-light btn-sm">Logout</button>
-      </div>
-    </div>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="/ventas"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          Ventas
+        </a>
+      </li>
+    </ul>
   </div>
 </nav>
+
+<div class="container mt-4">
+  
+</div>
+
 

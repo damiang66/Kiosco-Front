@@ -1,11 +1,11 @@
 <div class="container mt-4">
-  <h3 class="text-center">{{ idVenta ? 'Editar Venta' : 'Nueva Venta' }}</h3>
+  <h3 class="text-center">{{ idCompra ? 'Editar Compra' : 'Nueva Compra' }}</h3>
 
  <div class="mb-3">
   <label>Fecha</label>
   <input 
     type="date" 
-    [(ngModel)]="venta.fecha" 
+    [(ngModel)]="compra.fecha" 
     class="form-control" 
     placeholder="Fecha" 
   />
@@ -45,7 +45,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let det of venta.detalles; let i = index">
+      <tr *ngFor="let det of compra.detalles; let i = index">
         <td>{{ det.producto.descripcion }}</td>
         <td>{{ det.cantidad }}</td>
         <td>{{ det.precioUnitario | currency:'ARS' }}</td>
@@ -57,7 +57,7 @@
     </tbody>
   </table>
 
-  <h5 class="text-end mt-3">Total: {{ venta.total | currency:'ARS' }}</h5>
+  <h5 class="text-end mt-3">Total: {{ compra.total | currency:'ARS' }}</h5>
 
   <div class="text-center mt-4">
     <button class="btn btn-primary me-2" (click)="guardarVenta()">Guardar</button>

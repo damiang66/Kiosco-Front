@@ -2,6 +2,27 @@
   <h2>Listado de Productos</h2>
   <button routerLink="/productos/nuevo" class="btn btn-primary mb-3">Nuevo Producto</button>
 
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Buscar por descripción..."
+        [(ngModel)]="filtroDescripcion"
+        (input)="filtrarProductos()"
+      />
+    </div>
+    <div class="col-md-6">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Buscar por código..."
+        [(ngModel)]="filtroCodigo"
+        (input)="filtrarProductos()"
+      />
+    </div>
+  </div>
+
   <table class="table table-striped">
     <thead>
       <tr>
@@ -14,7 +35,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let p of productos">
+      <tr *ngFor="let p of productosFiltrados">
         <td>{{ p.codigo }}</td>
         <td>{{ p.descripcion }}</td>
         <td>{{ p.cantidad }}</td>
