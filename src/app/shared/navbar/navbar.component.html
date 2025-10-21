@@ -65,6 +65,11 @@
         </a>
       </li>
     </ul>
+    <div class="ms-auto">
+      <button class="btn btn-warning" (click)="generarResumen()" [disabled]="downloading">
+        {{ downloading ? 'Generando...' : 'Resumen bajo stock' }}
+      </button>
+    </div>
   </div>
 </nav>
 

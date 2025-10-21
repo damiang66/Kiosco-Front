@@ -19,12 +19,30 @@
 
     <div class="mb-3">
       <label class="form-label">Precio Compra</label>
-      <input type="number" class="form-control" name="precioCompra" [(ngModel)]="producto.precioCompra" required>
+      <input type="number" class="form-control" name="precioCompra" [(ngModel)]="producto.precioCompra" (ngModelChange)="onPrecioCompraChange($event)" required>
     </div>
 
     <div class="mb-3">
-      <label class="form-label">Precio Venta</label>
+      <label class="form-label">Calcular Precio Venta</label>
+      <div class="d-flex gap-2 align-items-center">
+        <select class="form-select w-auto" name="markupOption" [(ngModel)]="markupOption" (ngModelChange)="onMarkupChange($event)">
+          <option value="30">+30%</option>
+          <option value="40">+40%</option>
+          <option value="50">+50%</option>
+          <option value="manual">Manual</option>
+        </select>
+        <div *ngIf="!manualPrecioVenta" class="form-text">Se calculará automáticamente a partir del precio de compra.</div>
+      </div>
+    </div>
+
+    <div class="mb-3" *ngIf="manualPrecioVenta">
+      <label class="form-label">Precio Venta (manual)</label>
       <input type="number" class="form-control" name="precioVenta" [(ngModel)]="producto.precioVenta" required>
+    </div>
+
+    <div class="mb-3" *ngIf="!manualPrecioVenta">
+      <label class="form-label">Precio Venta (calculado)</label>
+      <input type="number" class="form-control" [(ngModel)]="producto.precioVenta" name="precioVentaCalc" disabled>
     </div>
 
     <button type="submit" class="btn btn-success">Guardar</button>
