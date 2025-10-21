@@ -1,67 +1,129 @@
 <div class="container mt-4">
-  <h3 class="text-center">{{ idCompra ? 'Editar Compra' : 'Nueva Compra' }}</h3>
+  <h2>{{ idCompra ? 'Editar Compra' : 'Nueva Compra' }}</h2>
+  <hr />
 
- <div class="mb-3">
-  <label>Fecha</label>
-  <input 
-    type="date" 
-    [(ngModel)]="compra.fecha" 
-    class="form-control" 
-    placeholder="Fecha" 
-  />
-</div>
+  <div class="mb-3">
+    <label>Fecha</label>
+    <input type="date" [(ngModel)]="compra.fecha" class="form-control" />
+  </div>
 
- 
-
-  <div class="row mb-3">
+  <!-- Selección del producto -->
+  <div class="row mb-3 align-items-end">
     <div class="col-md-6">
-      <label>Producto</label>
-      <select [(ngModel)]="productoSeleccionado" class="form-select">
-        <option [ngValue]="null">Seleccione un producto</option>
-        <option *ngFor="let p of productos" [ngValue]="p">
-          {{ p.descripcion }} - Stock: {{ p.cantidad }}
-        </option>
-      </select>
+      <label>Producto seleccionado:</label>
+      <input
+        class="form-control"
+        [value]="productoSeleccionado?.descripcion || ''"
+        readonly
+        placeholder="Ninguno seleccionado"
+      />
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-2">
       <label>Cantidad</label>
-      <input type="number" [(ngModel)]="cantidad" class="form-control" />
+      <input
+        type="number"
+        [(ngModel)]="cantidad"
+        min="1"
+        class="form-control"
+      />
     </div>
 
-    <div class="col-md-3 d-flex align-items-end">
-      <button class="btn btn-success w-100" (click)="agregarProducto()">Agregar</button>
+    <div class="col-md-2">
+      <button
+        class="btn btn-outline-primary w-100"
+        (click)="abrirModal(productoModal)"
+      >
+        Buscar producto
+      </button>
+    </div>
+
+    <div class="col-md-2">
+      <button class="btn btn-success w-100" (click)="agregarProducto()">
+        Agregar
+      </button>
     </div>
   </div>
 
-  <table class="table table-bordered text-center">
+  <!-- Tabla de detalles -->
+  <table class="table table-bordered table-striped mt-3 text-center">
     <thead class="table-dark">
       <tr>
         <th>Producto</th>
         <th>Cantidad</th>
-        <th>Precio</th>
+        <th>Precio Compra</th>
         <th>Subtotal</th>
         <th></th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let det of compra.detalles; let i = index">
-        <td>{{ det.producto.descripcion }}</td>
-        <td>{{ det.cantidad }}</td>
-        <td>{{ det.precioUnitario | currency:'ARS' }}</td>
-        <td>{{ det.subtotal | currency:'ARS' }}</td>
+      <tr *ngFor="let d of compra.detalles; let i = index">
+        <td>{{ d.producto.descripcion }}</td>
+        <td>{{ d.cantidad }}</td>
+        <td>{{ d.precioUnitario | currency: 'ARS' }}</td>
+        <td>{{ d.subtotal | currency: 'ARS' }}</td>
         <td>
-          <button class="btn btn-danger btn-sm" (click)="eliminarDetalle(i)">X</button>
+          <button class="btn btn-danger btn-sm" (click)="eliminarDetalle(i)">
+            X
+          </button>
         </td>
       </tr>
     </tbody>
   </table>
 
-  <h5 class="text-end mt-3">Total: {{ compra.total | currency:'ARS' }}</h5>
+  <div class="text-end mt-3">
+    <h4>Total: {{ compra.total | currency: 'ARS' }}</h4>
+  </div>
 
-  <div class="text-center mt-4">
-    <button class="btn btn-primary me-2" (click)="guardarVenta()">Guardar</button>
-    <button class="btn btn-secondary" routerLink="/productos">Cancelar</button>
+  <div class="mt-4 text-center">
+    <button class="btn btn-primary me-2" (click)="guardarCompra()">
+      {{ idCompra ? 'Actualizar' : 'Guardar' }}
+    </button>
+    <button class="btn btn-secondary" routerLink="/compras">Cancelar</button>
   </div>
 </div>
 
+<!-- Modal de productos -->
+<ng-template #productoModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Buscar Producto</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <input
+      type="text"
+      class="form-control mb-3"
+      placeholder="Buscar por código o descripción..."
+      [(ngModel)]="filtro"
+      (input)="filtrarProductos()"
+    />
+
+    <table class="table table-hover table-bordered text-center">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Descripción</th>
+          <th>Stock</th>
+          <th>Precio</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of productosFiltrados">
+          <td>{{ p.codigo }}</td>
+          <td>{{ p.descripcion }}</td>
+          <td>{{ p.cantidad }}</td>
+          <td>{{ p.precioCompra | currency: 'ARS' }}</td>
+          <td>
+            <button
+              class="btn btn-sm btn-primary"
+              (click)="seleccionarProducto(p, modal)"
+            >
+              Seleccionar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>

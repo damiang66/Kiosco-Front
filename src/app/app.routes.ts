@@ -5,6 +5,9 @@ import { CompraListComponent } from './features/compra/compra-list/compra-list.c
 import { CompraFormComponent } from './features/compra/compra-form/compra-form.component';
 import { VentaListComponent } from './features/ventas/components/venta-list/venta-list.component';
 import { VentaFormComponent } from './features/ventas/components/venta-form/venta-form.component';
+import { CierreCajaComponent } from './features/caja/cierre-caja/cierre-caja.component';
+import { ReporteVentaComponent } from './features/reportes/reporte-venta/reporte-venta.component';
+import { ReporteCompraComponent } from './features/reportes/reporte-compra/reporte-compra.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'productos', pathMatch: 'full' },
@@ -17,6 +20,9 @@ export const routes: Routes = [
   { path: 'ventas', component: VentaListComponent },
   { path: 'ventas/nuevo', component: VentaFormComponent },
   { path: 'ventas/editar/:id', component: VentaFormComponent },
+  {path: 'cierreCaja',component:CierreCajaComponent},
+  {path:'reporteVenta',component:ReporteVentaComponent},
+    {path:'reporteCompra',component:ReporteCompraComponent},
   { path: '**', redirectTo: 'productos' },
 ];
 
