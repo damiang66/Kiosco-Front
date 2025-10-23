@@ -1,39 +1,24 @@
 <div class="container mt-4">
   <h3 class="text-center">{{ idVenta ? 'Editar Venta' : 'Nueva Venta' }}</h3>
 
- <div class="mb-3">
-  <label>Fecha</label>
-  <input 
-    type="date" 
-    [(ngModel)]="venta.fecha" 
-    class="form-control" 
-    placeholder="Fecha" 
-  />
-</div>
-
- 
-
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <label>Producto</label>
-      <select [(ngModel)]="productoSeleccionado" class="form-select">
-        <option [ngValue]="null">Seleccione un producto</option>
-        <option *ngFor="let p of productos" [ngValue]="p">
-          {{ p.descripcion }} - Stock: {{ p.cantidad }}
-        </option>
-      </select>
-    </div>
-
-    <div class="col-md-3">
-      <label>Cantidad</label>
-      <input type="number" [(ngModel)]="cantidad" class="form-control" />
-    </div>
-
-    <div class="col-md-3 d-flex align-items-end">
-      <button class="btn btn-success w-100" (click)="agregarProducto()">Agregar</button>
-    </div>
+  <!-- Fecha -->
+  <div class="mb-3">
+    <label>Fecha</label>
+    <input 
+      type="date" 
+      [(ngModel)]="venta.fecha" 
+      class="form-control" 
+      placeholder="Fecha" 
+    />
   </div>
 
+  <!-- Botón abrir modal -->
+  <div class="d-flex justify-content-between mb-3">
+    <h5>Productos</h5>
+    <button class="btn btn-success" (click)="abrirModal()">Buscar producto</button>
+  </div>
+
+  <!-- Tabla detalles -->
   <table class="table table-bordered text-center">
     <thead class="table-dark">
       <tr>
@@ -61,7 +46,46 @@
 
   <div class="text-center mt-4">
     <button class="btn btn-primary me-2" (click)="guardarVenta()">Guardar</button>
-    <button class="btn btn-secondary" routerLink="/productos">Cancelar</button>
+    <button class="btn btn-secondary" routerLink="/ventas">Cancelar</button>
   </div>
-</div>
 
+  <!-- Modal de búsqueda de producto -->
+  <ng-template #modalProductos let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Buscar Producto</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <input
+        type="text"
+        class="form-control mb-3"
+        placeholder="Buscar por código o descripción"
+        [(ngModel)]="terminoBusqueda"
+        (input)="buscarProducto()"
+      />
+
+      <table class="table table-hover text-center">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Descripción</th>
+            <th>Stock</th>
+            <th>Precio Venta</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of productosFiltrados">
+            <td>{{ p.codigo }}</td>
+            <td>{{ p.descripcion }}</td>
+            <td>{{ p.cantidad }}</td>
+            <td>{{ p.precioVenta | currency:'ARS' }}</td>
+            <td>
+              <button class="btn btn-sm btn-primary" (click)="seleccionarProducto(p, modal)">Seleccionar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-template>
+</div>

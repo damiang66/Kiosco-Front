@@ -13,7 +13,16 @@
           Productos
         </a>
       </li>
-
+<li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="/cierreCaja"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          Cierre Caja
+        </a>
+      </li>
       <li class="nav-item">
         <a
           class="nav-link"
@@ -35,7 +44,32 @@
           Ventas
         </a>
       </li>
+        <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="/reporteVenta"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          Reporte Venta
+        </a>
+      </li>
+        <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="/reporteCompra"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          Reporte Compra
+        </a>
+      </li>
     </ul>
+    <div class="ms-auto">
+      <button class="btn btn-warning" (click)="generarResumen()" [disabled]="downloading">
+        {{ downloading ? 'Generando...' : 'Resumen bajo stock' }}
+      </button>
+    </div>
   </div>
 </nav>
 

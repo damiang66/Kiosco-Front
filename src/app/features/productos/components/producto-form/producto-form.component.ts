@@ -24,6 +24,9 @@ export class ProductoFormComponent implements OnInit {
   };
 
   editMode = false;
+  // markupOption: '30' | '40' | '50' | 'manual'
+  markupOption: string = '30';
+  manualPrecioVenta = false;
 
   constructor(
     private service: ProductoService,
@@ -35,7 +38,15 @@ export class ProductoFormComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.editMode = true;
-      this.service.getById(+id).subscribe(p => this.producto = p);
+      this.service.getById(+id).subscribe(p => {
+        this.producto = p;
+        // Detectar si el precioVenta corresponde a alguno de los markups o es manual
+        this.detectMarkup();
+      });
+    }
+    // si se crea nuevo, aplicar markup por defecto
+    if (!this.editMode) {
+      this.applyMarkup();
     }
   }
 
@@ -54,6 +65,57 @@ export class ProductoFormComponent implements OnInit {
   }
   cancelar(){
  this.router.navigate(['/productos']);
+  }
+
+  onPrecioCompraChange(value: any) {
+    // ngModelChange puede enviar string
+    const v = Number(value) || 0;
+    this.producto.precioCompra = v;
+    if (!this.manualPrecioVenta) {
+      this.applyMarkup();
+    }
+  }
+
+  onMarkupChange(value: string) {
+    if (value === 'manual') {
+      this.manualPrecioVenta = true;
+      this.markupOption = 'manual';
+    } else {
+      this.manualPrecioVenta = false;
+      this.markupOption = value;
+      this.applyMarkup();
+    }
+  }
+
+  applyMarkup() {
+    const compra = Number(this.producto.precioCompra) || 0;
+    if (this.markupOption === 'manual') return;
+    const percent = Number(this.markupOption) / 100;
+    // redondear a 2 decimales
+    this.producto.precioVenta = Number((compra * (1 + percent)).toFixed(2));
+  }
+
+  private detectMarkup() {
+    const compra = Number(this.producto.precioCompra) || 0;
+    const venta = Number(this.producto.precioVenta) || 0;
+    const options = ['30', '40', '50'];
+    const eps = 0.01; // tolerancia para comparar decimales
+    let matched = false;
+    for (const opt of options) {
+      const percent = Number(opt) / 100;
+      const expected = Number((compra * (1 + percent)).toFixed(2));
+      if (Math.abs(expected - venta) <= eps) {
+        this.markupOption = opt;
+        this.manualPrecioVenta = false;
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) {
+      // No coincide con ningún markup: dejar manual
+      this.markupOption = 'manual';
+      this.manualPrecioVenta = true;
+    }
   }
 }
 
