@@ -15,14 +15,18 @@ import { VentaService } from '../../services/venta.service';
 })
 export class VentaFormComponent implements OnInit {
   @ViewChild('modalProductos') modalProductos!: TemplateRef<any>;
+  @ViewChild('modalPago') modalPago!: TemplateRef<any>;
 
-  venta: any = { fecha: new Date().toISOString().split('T')[0], detalles: [] };
+  venta: any = { fecha: new Date().toISOString().split('T')[0], detalles: [], total: 0 };
   productos: any[] = [];
   productosFiltrados: any[] = [];
   terminoBusqueda: string = '';
   productoSeleccionado: any = null;
   cantidad: number = 1;
   idVenta: number | null = null;
+
+  montoCliente: number = 0;
+  vuelto: number = 0;
 
   constructor(
     private ventaService: VentaService,
@@ -40,9 +44,14 @@ export class VentaFormComponent implements OnInit {
 
     this.idVenta = this.route.snapshot.params['id'];
     if (this.idVenta) {
-      this.ventaService.getVentaById(this.idVenta).subscribe((data) => (this.venta = data));
+      this.ventaService.getVentaById(this.idVenta).subscribe((data) => {
+        this.venta = data;
+
+        if (!this.venta.total) this.calcularTotal();
+      });
     }
   }
+
 
   abrirModal() {
     this.modalService.open(this.modalProductos, { size: 'lg' });
@@ -69,7 +78,7 @@ export class VentaFormComponent implements OnInit {
       confirmButtonText: 'Agregar',
     }).then((result) => {
       if (result.isConfirmed && result.value > 0) {
-        this.agregarProducto(producto, result.value);
+        this.agregarProducto(producto, Number(result.value));
       }
     });
   }
@@ -81,8 +90,7 @@ export class VentaFormComponent implements OnInit {
       precioUnitario: producto.precioVenta,
       subtotal: cantidad * producto.precioVenta,
     };
-    console.log(detalle);
-    
+
     this.venta.detalles.push(detalle);
     this.calcularTotal();
   }
@@ -96,29 +104,80 @@ export class VentaFormComponent implements OnInit {
     this.venta.total = this.venta.detalles.reduce((acc: number, d: any) => acc + d.subtotal, 0);
   }
 
-  guardarVenta() {
+  abrirModalPago() {
+    if (!this.venta.detalles || this.venta.detalles.length === 0) {
+      Swal.fire('Atención', 'Debe agregar al menos un producto.', 'warning');
+      return;
+    }
 
-/// ver el tema del vuelto
+    this.montoCliente = 0;
+    this.vuelto = 0;
+
+    this.modalService.open(this.modalPago, { centered: true, backdrop: 'static' });
+  }
 
 
+  calcularVuelto() {
+    const monto = Number(this.montoCliente || 0);
+    const total = Number(this.venta.total || 0);
+    this.vuelto = parseFloat((monto - total).toFixed(2)); 
+  }
 
+
+  guardarVentaDesdeModal(modalRef: any) {
+    const total = Number(this.venta.total || 0);
+    const monto = Number(this.montoCliente || 0);
+
+    if (monto < total) {
+      Swal.fire('Monto insuficiente', 'El monto ingresado no cubre el total.', 'error');
+      return;
+    }
+
+
+    this.venta.montoEntregado = monto;
+    this.venta.vuelto = parseFloat((monto - total).toFixed(2));
+
+ 
     if (this.idVenta) {
       this.ventaService.actualizarVenta(this.idVenta, this.venta).subscribe({
-        next: () => {
-          Swal.fire('Éxito', 'Venta actualizada correctamente', 'success');
-          this.router.navigate(['/ventas']);
+        next: (resp) => {
+  
+          modalRef.close();
+          Swal.fire({
+            icon: 'success',
+            title: 'Venta actualizada',
+            html: `Venta actualizada correctamente.<br><b>Vuelto a entregar:</b> ${this.formatoCurrency(this.venta.vuelto)}`,
+          }).then(() => this.router.navigate(['/ventas']));
         },
-        error: () => Swal.fire('Error', 'No se pudo actualizar la venta', 'error'),
+        error: (err) => {
+          Swal.fire('Error', 'No se pudo actualizar la venta', 'error');
+        },
       });
     } else {
       this.ventaService.crearVenta(this.venta).subscribe({
-        next: () => {
-          Swal.fire('Éxito', 'Venta creada correctamente', 'success');
-          this.router.navigate(['/ventas']);
+        next: (resp) => {
+          modalRef.close();
+          Swal.fire({
+            icon: 'success',
+            title: 'Venta creada',
+            html: `Venta creada correctamente.<br><b>Vuelto a entregar:</b> ${this.formatoCurrency(this.venta.vuelto)}`,
+          }).then(() => this.router.navigate(['/ventas']));
         },
-        error: () => Swal.fire('Error', 'No se pudo crear la venta', 'error'),
+        error: (err) => {
+          Swal.fire('Error', 'No se pudo crear la venta', 'error');
+        },
       });
     }
   }
-}
 
+
+  formatoCurrency(valor: number) {
+    return valor.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
+  }
+
+
+  guardarVenta() {
+    console.log('Usar el modal de pago para guardar la venta.');
+    this.abrirModalPago();
+  }
+}
