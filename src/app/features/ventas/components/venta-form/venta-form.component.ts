@@ -102,6 +102,8 @@ export class VentaFormComponent implements OnInit {
 
 
 
+
+
     if (this.idVenta) {
       this.ventaService.actualizarVenta(this.idVenta, this.venta).subscribe({
         next: () => {
