@@ -81,6 +81,8 @@ export class VentaFormComponent implements OnInit {
       precioUnitario: producto.precioVenta,
       subtotal: cantidad * producto.precioVenta,
     };
+    console.log(detalle);
+    
     this.venta.detalles.push(detalle);
     this.calcularTotal();
   }
@@ -95,6 +97,11 @@ export class VentaFormComponent implements OnInit {
   }
 
   guardarVenta() {
+
+/// ver el tema del vuelto
+
+
+
     if (this.idVenta) {
       this.ventaService.actualizarVenta(this.idVenta, this.venta).subscribe({
         next: () => {
