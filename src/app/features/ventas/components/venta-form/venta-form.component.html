@@ -45,11 +45,11 @@
   <h5 class="text-end mt-3">Total: {{ venta.total | currency:'ARS' }}</h5>
 
   <div class="text-center mt-4">
-    <button class="btn btn-primary me-2" (click)="guardarVenta()">Guardar</button>
+    <button class="btn btn-primary me-2" (click)="guardarVenta()">Siguiente</button>
     <button class="btn btn-secondary" routerLink="/ventas">Cancelar</button>
   </div>
 
-  <!-- Modal de búsqueda de producto -->
+<!-- Modal de búsqueda de producto -->
   <ng-template #modalProductos let-modal>
     <div class="modal-header">
       <h5 class="modal-title">Buscar Producto</h5>
@@ -130,3 +130,42 @@
   -->
   
 </div>
+
+<!-- Modal de Pago -->
+<ng-template #modalPago let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Registrar Pago</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+
+  <div class="modal-body">
+    <div class="mb-3">
+      <label for="montoCliente" class="form-label">Monto entregado por el cliente</label>
+      <input 
+        id="montoCliente"
+        type="number"
+        class="form-control"
+        [(ngModel)]="montoCliente"
+        (input)="calcularVuelto()"
+        placeholder="Ingrese el monto entregado"
+        min="0"
+      />
+    </div>
+
+    <div *ngIf="montoCliente >= 0" class="alert" 
+         [ngClass]="{'alert-info': vuelto >= 0, 'alert-danger': vuelto < 0}">
+      <p><strong>Total a pagar:</strong> {{ venta.total | currency:'ARS' }}</p>
+      <p><strong>Vuelto:</strong> 
+        <span *ngIf="vuelto >= 0">{{ vuelto | currency:'ARS' }}</span>
+        <span *ngIf="vuelto < 0">Faltan {{ (vuelto * -1) | currency:'ARS' }}</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="modal-footer d-flex justify-content-between">
+    <button class="btn btn-secondary" (click)="modal.dismiss()">Cancelar</button>
+    <button class="btn btn-success" (click)="guardarVentaDesdeModal(modal)">
+      Confirmar y Guardar Venta
+    </button>
+  </div>
+</ng-template>
