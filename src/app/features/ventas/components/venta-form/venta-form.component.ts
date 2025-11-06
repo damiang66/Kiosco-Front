@@ -137,7 +137,7 @@ export class VentaFormComponent implements OnInit {
     this.venta.montoEntregado = monto;
     this.venta.vuelto = parseFloat((monto - total).toFixed(2));
 
- 
+
     if (this.idVenta) {
       this.ventaService.actualizarVenta(this.idVenta, this.venta).subscribe({
         next: (resp) => {
